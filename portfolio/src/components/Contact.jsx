@@ -17,6 +17,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     user_name: '',
     user_email: '',
+    phone: '', 
     subject: '',
     message: '',
   });
@@ -38,31 +39,37 @@ const Contact = () => {
     setStatus({ submitting: true, submitted: false, error: false, errorMessage: '' });
 
     const SERVICE_ID = 'service_os14vfa';
-    const TEMPLATE_ID = 'template_q8klbdo';
     const PUBLIC_KEY = 'XzPhf5xFlWuuE4pX3';
+    
+    const MAIN_TEMPLATE_ID = 'template_jzbvr46';   // Tujhe notification bhejne ke liye
+    const AUTO_REPLY_TEMPLATE_ID = 'template_whagiuo'; // User ko auto-reply bhejne ke liye
 
-    emailjs
-      .sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
-      .then(
-        (result) => {
-          console.log('Email sent successfully:', result.text);
-          setStatus({ submitting: false, submitted: true, error: false, errorMessage: '' });
-        },
-        (error) => {
-          console.error('Failed to send email:', error.text);
-          setStatus({
-            submitting: false,
-            submitted: false,
-            error: true,
-            errorMessage: 'Failed to send message. Please try again or reach out via email directly.',
-          });
-        }
-      );
+    // 1. Send Main Notification to You
+    const sendNotification = emailjs.sendForm(SERVICE_ID, MAIN_TEMPLATE_ID, formRef.current, PUBLIC_KEY);
+
+    // 2. Send Auto-Reply to the User
+    const sendAutoReply = emailjs.sendForm(SERVICE_ID, AUTO_REPLY_TEMPLATE_ID, formRef.current, PUBLIC_KEY);
+
+    // Execute both requests simultaneously
+    Promise.all([sendNotification, sendAutoReply])
+      .then((responses) => {
+        console.log('Emails sent successfully:', responses);
+        setStatus({ submitting: false, submitted: true, error: false, errorMessage: '' });
+      })
+      .catch((error) => {
+        console.error('Failed to send email:', error);
+        setStatus({
+          submitting: false,
+          submitted: false,
+          error: true,
+          errorMessage: 'Failed to send message. Please try again or reach out via email directly.',
+        });
+      });
   };
 
   const handleReset = () => {
     setStatus({ submitting: false, submitted: false, error: false, errorMessage: '' });
-    setFormData({ user_name: '', user_email: '', subject: '', message: '' });
+    setFormData({ user_name: '', user_email: '', phone: '', subject: '', message: '' });
   };
 
   return (
@@ -169,7 +176,7 @@ const Contact = () => {
 
                 {/* GitHub */}
                 <a
-                  href="https://github.com"
+                  href="https://github.com/Zuber63"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-4 py-2.5 bg-white text-slate-800 border border-slate-200 hover:bg-slate-100 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 shadow-xs"
@@ -196,6 +203,7 @@ const Contact = () => {
                   </div>
                 )}
 
+                {/* Name & Email Row */}
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
@@ -226,6 +234,21 @@ const Contact = () => {
                       className="w-full px-4 py-3 rounded-xl bg-[#FAFAFA] border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 transition-all text-sm"
                     />
                   </div>
+                </div>
+
+                {/* Phone Number Field */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+91 8851081499"
+                    className="w-full px-4 py-3 rounded-xl bg-[#FAFAFA] border border-slate-200 text-slate-900 focus:bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 transition-all text-sm"
+                  />
                 </div>
 
                 <div>
@@ -287,7 +310,7 @@ const Contact = () => {
                   Message Delivered!
                 </h3>
                 <p className="text-slate-600 text-sm max-w-md mx-auto leading-relaxed">
-                  Thank you for reaching out, <span className="font-semibold text-slate-900">{formData.user_name || 'there'}</span>! Your message has been sent directly to my email. I will respond as soon as possible.
+                  Thank you for reaching out, <span className="font-semibold text-slate-900">{formData.user_name || 'there'}</span>! Your message has been sent, and an automated confirmation has been sent to your email. I will respond soon.
                 </p>
                 <div className="pt-4">
                   <button

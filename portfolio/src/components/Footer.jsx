@@ -97,7 +97,7 @@ const Footer = () => {
 
             {/* GitHub */}
             <a
-              href="https://github.com"
+              href="https://github.com/Zuber63"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
