@@ -109,12 +109,11 @@ const Hero = () => {
               >
                 Explore Projects
               </a>
-              <a
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-3.5 text-blue-600 text-sm font-semibold rounded-full hover:bg-blue-50 transition-all flex items-center gap-2 group cursor-pointer"
-              >
+           <a
+  href="/Zuber_Saifi_Resume.pdf"
+  download="Zuber_Saifi_Resume.pdf"
+  className="px-5 py-3.5 text-blue-600 text-sm font-semibold rounded-full hover:bg-blue-50 transition-all flex items-center gap-2 group cursor-pointer"
+>
                 Resume 
                 <svg className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
